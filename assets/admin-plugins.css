@@ -1,0 +1,14 @@
+table.plugins .plugin-version-author-uri { margin-top: 2px; }
+table.plugins .row-actions > span > a { white-space: nowrap; }
+table.plugins .row-actions .activate > a::before,
+table.plugins .row-actions .deactivate > a::before,
+table.plugins .row-actions .delete > a::before,
+table.plugins .row-actions .settings > a::before {
+    font: normal 15px/1 dashicons;
+    margin-inline-end: 3px;
+    vertical-align: text-bottom;
+}
+table.plugins .row-actions .activate > a::before { content: "\\f132"; }
+table.plugins .row-actions .deactivate > a::before { content: "\\f153"; }
+table.plugins .row-actions .delete > a::before { content: "\\f182"; }
+table.plugins .row-actions .settings > a::before { content: "\\f108"; }

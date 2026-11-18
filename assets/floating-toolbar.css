@@ -1,0 +1,26 @@
+#wpadminbar .mx-backbone-toolbar-search { padding-inline: 4px; }
+#wpadminbar .mx-backbone-toolbar-search input {
+    box-sizing: border-box;
+    width: 104px;
+    height: 24px;
+    min-height: 24px;
+    padding: 0 5px;
+    font: 12px/1.2 system-ui, sans-serif;
+}
+@media (min-width: 1080px) and (hover: hover) and (pointer: fine) {
+    #wpadminbar {
+        opacity: .5;
+        transform: translateY(calc(-100% + 8px));
+        transition: opacity .15s, transform .15s;
+    }
+    #wpadminbar:hover, #wpadminbar:focus-within { opacity: 1; transform: none; }
+    html:has(#wpadminbar) { margin-top: 8px !important; }
+}
+@media (max-width: 1079px) {
+    #wpadminbar :is(#wp-admin-bar-mx-backbone-user-search, #wp-admin-bar-mx-backbone-plugin-search) {
+        display: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #wpadminbar { transition: none; }
+}

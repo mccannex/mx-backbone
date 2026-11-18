@@ -1,0 +1,17 @@
+.mx-backbone-page-permalink { display: block; overflow-wrap: anywhere; }
+.mx-backbone-page-status { background: #e9eef3; border-radius: 4px; padding: 2px 5px; }
+table.pages .column-title .row-actions { color: transparent; }
+table.pages .column-title .row-actions a,
+table.pages .column-title .row-actions button { padding-inline: 2px; }
+table.pages .row-actions .edit > a::before,
+table.pages .row-actions button.editinline::before,
+table.pages .row-actions .trash > a::before,
+table.pages .row-actions .view > a::before {
+    font: normal 15px/1 dashicons;
+    vertical-align: text-bottom;
+    margin-inline-end: 3px;
+}
+table.pages .row-actions .edit > a::before { content: "\\f464"; }
+table.pages .row-actions button.editinline::before { content: "\\f327"; }
+table.pages .row-actions .trash > a::before { content: "\\f182"; }
+table.pages .row-actions .view > a::before { content: "\\f177"; }
