@@ -36,7 +36,7 @@ function render_admin(): void
     ?>
     <div class="wrap">
         <h1>MX Backbone</h1>
-        <p>Shared tools, configured for this site. New modules start disabled.</p>
+        <p><?php printf(esc_html__('Installed version %s. New modules start disabled.', 'mx-backbone'), esc_html(VERSION)); ?></p>
         <?php if (isset($_GET['saved']) && $_GET['saved'] === '1') : ?>
             <div class="notice notice-success is-dismissible"><p>Module settings saved.</p></div>
         <?php endif; ?>
