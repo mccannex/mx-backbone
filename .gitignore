@@ -1,0 +1,7 @@
+/dist/
+.DS_Store
+
+# Local project notes
+/AGENTS.md
+/README.md
+/docs/
