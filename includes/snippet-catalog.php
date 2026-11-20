@@ -14,7 +14,8 @@ function decode_snippet_catalog(string $json): array
     }
     foreach ($manifest['snippets'] as $id => $entry) {
         if (!preg_match('/^[a-z0-9-]{1,80}$/D', (string) $id) || !is_string($entry['name'] ?? null) ||
-            !is_string($entry['description'] ?? null) || !is_array($entry['versions'] ?? null) || !$entry['versions']) {
+            !is_string($entry['description'] ?? null) ||
+            !in_array($entry['run_at'] ?? 'backend', ['backend', 'all', 'frontend'], true) || !is_array($entry['versions'] ?? null) || !$entry['versions']) {
             return [];
         }
         foreach ($entry['versions'] as $version => $target) {

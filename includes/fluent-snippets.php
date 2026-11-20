@@ -43,7 +43,7 @@ function save_fluent_snippet(string $code, array $entry, string $file = '', arra
             'description' => $entry['description'],
             'type' => 'PHP',
             'status' => 'draft',
-            'run_at' => 'backend',
+            'run_at' => $entry['run_at'] ?? 'backend',
             'priority' => 10,
             'group' => 'MX Backbone',
         ]]);
