@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "snippets": {
+    "dashboard-post-type-counts": {
+      "name": "Post type counts at a glance",
+      "description": "Show counts for additional post types on the dashboard.",
+      "versions": {
+        "1.0.0": {
+          "sha256": "5d99e9ccc9c62a2155d2b381710d5dea7c5de281e615cccf448dc9e67df032e7",
+          "code": "add_filter('dashboard_glance_items', static function (array $items): array {\n    global $wpdb;\n\n    $counts = $wpdb->get_results(\n        \"SELECT post_type, COUNT(*) AS total FROM {$wpdb->posts}\n         WHERE post_type NOT IN ('post', 'page') GROUP BY post_type\n         ORDER BY total DESC, post_type ASC\"\n    );\n\n    foreach ($counts as $row) {\n        $type = get_post_type_object($row->post_type);\n        $count = (int) $row->total;\n        $label = $type ? ($count === 1 ? $type->labels->singular_name : $type->labels->name) : $row->post_type;\n        $text = esc_html(number_format_i18n($count) . ' ' . $label);\n        if ($type && $type->show_ui && current_user_can($type->cap->edit_posts)) {\n            $items[] = sprintf('<a href=\"%s\">%s</a>', esc_url(add_query_arg('post_type', $type->name, admin_url('edit.php'))), $text);\n        } else {\n            $items[] = '<span>' . $text . '</span>';\n        }\n    }\n\n    return $items;\n});\n"
+        },
+        "1.0.1": {
+          "sha256": "1525fb29a31db48ac6bf13d0e8f6547db6efef0ea4198461fb60ae65cb5b7622",
+          "code": "add_filter('dashboard_glance_items', static function (array $items): array {\n    global $wpdb;\n\n    $counts = $wpdb->get_results(\n        \"SELECT post_type, COUNT(*) AS total FROM {$wpdb->posts}\n         WHERE post_type NOT IN ('post', 'page') GROUP BY post_type\n         ORDER BY post_type ASC\"\n    );\n\n    foreach ($counts as $row) {\n        $type = get_post_type_object($row->post_type);\n        $count = (int) $row->total;\n        $label = $type ? ($count === 1 ? $type->labels->singular_name : $type->labels->name) : $row->post_type;\n        $text = esc_html(number_format_i18n($count) . ' ' . $label);\n        if ($type && $type->show_ui && current_user_can($type->cap->edit_posts)) {\n            $items[] = sprintf('<a href=\"%s\">%s</a>', esc_url(add_query_arg('post_type', $type->name, admin_url('edit.php'))), $text);\n        } else {\n            $items[] = '<span>' . $text . '</span>';\n        }\n    }\n\n    return $items;\n});\n"
+        },
+        "1.0.2": {
+          "sha256": "a81f18b91fb5426f661c26e423a9510ab40f1d6b2b065f590e40626cc9fc9c93",
+          "code": "add_filter('dashboard_glance_items', static function (array $items): array {\n    global $wpdb;\n\n    $counts = $wpdb->get_results(\n        \"SELECT post_type, COUNT(*) AS total FROM {$wpdb->posts}\n         WHERE post_type NOT IN ('post', 'page') GROUP BY post_type\n         ORDER BY post_type ASC\"\n    );\n\n    foreach ($counts as $row) {\n        $type = get_post_type_object($row->post_type);\n        $count = (int) $row->total;\n        $label = $type ? ($count === 1 ? $type->labels->singular_name : $type->labels->name) : $row->post_type;\n        $text = esc_html($label . ': ' . number_format_i18n($count));\n        if ($type && $type->show_ui && current_user_can($type->cap->edit_posts)) {\n            $items[] = sprintf('<a href=\"%s\">%s</a>', esc_url(add_query_arg('post_type', $type->name, admin_url('edit.php'))), $text);\n        } else {\n            $items[] = '<span>' . $text . '</span>';\n        }\n    }\n\n    return $items;\n});\n"
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ sources.extend(
     path for path in sorted((root / 'assets').rglob('*'))
     if path.is_file() and path.suffix.lower() in asset_extensions
 )
+sources.append(root / 'library' / 'pilot.json')
 with ZipFile(destination, 'w', ZIP_DEFLATED) as archive:
     for source in sources:
         archive.write(source, Path('mx-backbone') / source.relative_to(root))

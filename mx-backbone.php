@@ -2,7 +2,7 @@
 /**
  * Plugin Name: MX Backbone
  * Description: MCCANNEX shared WordPress tools and per-site improvements.
- * Version: 0.2.1
+ * Version: 0.3.0-dev
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: MCCANNEX
@@ -14,12 +14,13 @@ namespace MCCANNEX\Backbone;
 
 defined('ABSPATH') || exit;
 
-const VERSION = '0.2.1';
+const VERSION = '0.3.0-dev';
 const ROOT = __DIR__;
 
 require_once ROOT . '/includes/modules.php';
 require_once ROOT . '/includes/admin.php';
 require_once ROOT . '/includes/updates.php';
+require_once ROOT . '/includes/snippet-library.php';
 
 add_action('plugins_loaded', __NAMESPACE__ . '\\load_modules', 20);
 add_action('admin_menu', __NAMESPACE__ . '\\register_admin');
