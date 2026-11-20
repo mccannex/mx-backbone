@@ -34,6 +34,7 @@ function render_admin(): void
 
     $enabled = enabled_modules();
     $managed = snippet_library_state();
+    $unmanaged = array_diff_key(modules(), $managed);
     ?>
     <div class="wrap">
         <h1>Legacy Backbone Modules</h1>
@@ -43,6 +44,9 @@ function render_admin(): void
             </p>
         <?php endif; ?>
         <p><?php printf(esc_html__('Installed version %s. New modules start disabled.', 'mx-backbone'), esc_html(VERSION)); ?></p>
+        <?php if (!$unmanaged) : ?>
+            <p><?php esc_html_e('All modules on this site are now managed in the Snippet Library.', 'mx-backbone'); ?></p>
+        <?php else : ?>
         <?php if (isset($_GET['saved']) && $_GET['saved'] === '1') : ?>
             <div class="notice notice-success is-dismissible"><p>Module settings saved.</p></div>
         <?php endif; ?>
@@ -68,6 +72,7 @@ function render_admin(): void
             </table>
             <?php submit_button('Save modules'); ?>
         </form>
+        <?php endif; ?>
     </div>
     <?php
 }
