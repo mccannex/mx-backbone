@@ -132,7 +132,7 @@ function enabled_modules(): array
     $saved = get_option('mx_backbone_enabled_modules', []);
 
     return is_array($saved)
-        ? array_values(array_intersect(array_keys(modules()), $saved))
+        ? array_values(array_diff(array_intersect(array_keys(modules()), $saved), array_keys(snippet_library_state())))
         : [];
 }
 

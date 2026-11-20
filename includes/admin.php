@@ -6,7 +6,7 @@ defined('ABSPATH') || exit;
 
 function register_admin(): void
 {
-    add_management_page('MX Backbone', 'MX Backbone', 'manage_options', 'mx-backbone', __NAMESPACE__ . '\\render_admin');
+    add_management_page('Legacy Backbone Modules', 'Legacy Backbone Modules', 'manage_options', 'mx-backbone', __NAMESPACE__ . '\\render_admin');
 }
 
 function save_modules(): void
@@ -20,7 +20,7 @@ function save_modules(): void
         ? wp_unslash($_POST['modules'])
         : [];
     $submitted = array_filter($submitted, 'is_string');
-    $enabled = array_values(array_intersect(array_keys(modules()), $submitted));
+    $enabled = array_values(array_diff(array_intersect(array_keys(modules()), $submitted), array_keys(snippet_library_state())));
     update_option('mx_backbone_enabled_modules', $enabled, false);
     wp_safe_redirect(admin_url('tools.php?page=mx-backbone&saved=1'));
     exit;
@@ -33,9 +33,15 @@ function render_admin(): void
     }
 
     $enabled = enabled_modules();
+    $managed = snippet_library_state();
     ?>
     <div class="wrap">
-        <h1>MX Backbone</h1>
+        <h1>Legacy Backbone Modules</h1>
+        <?php if (can_manage_snippet_library()) : ?>
+            <p><?php esc_html_e('Use the library to install and update snippets in Fluent Snippets.', 'mx-backbone'); ?>
+                <a href="<?php echo esc_url(library_snippet_url()); ?>"><?php esc_html_e('Open Backbone Snippet Library', 'mx-backbone'); ?></a>
+            </p>
+        <?php endif; ?>
         <p><?php printf(esc_html__('Installed version %s. New modules start disabled.', 'mx-backbone'), esc_html(VERSION)); ?></p>
         <?php if (isset($_GET['saved']) && $_GET['saved'] === '1') : ?>
             <div class="notice notice-success is-dismissible"><p>Module settings saved.</p></div>
@@ -47,12 +53,13 @@ function render_admin(): void
                 <thead><tr><th>Enabled</th><th>Module</th><th>Status</th></tr></thead>
                 <tbody>
                 <?php foreach (modules() as $id => $module) :
+                    $library_managed = isset($managed[$id]);
                     $selected = in_array($id, $enabled, true);
                     $missing = missing_dependencies($module);
-                    $status = $missing ? 'Unavailable: ' . implode(', ', $missing) : ($selected ? 'Active' : 'Disabled');
+                    $status = $library_managed ? 'Managed in Snippet Library' : ($missing ? 'Unavailable: ' . implode(', ', $missing) : ($selected ? 'Active' : 'Disabled'));
                     ?>
                     <tr>
-                        <td><input type="checkbox" name="modules[]" value="<?php echo esc_attr($id); ?>" aria-label="<?php echo esc_attr('Enable ' . $module['label']); ?>" <?php checked($selected); ?>></td>
+                        <td><input type="checkbox" name="modules[]" value="<?php echo esc_attr($id); ?>" aria-label="<?php echo esc_attr('Enable ' . $module['label']); ?>" <?php checked($selected); disabled($library_managed); ?>></td>
                         <td><strong><?php echo esc_html($module['label']); ?></strong><p><?php echo esc_html($module['description']); ?></p></td>
                         <td><?php echo esc_html($status); ?></td>
                     </tr>
